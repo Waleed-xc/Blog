@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
     required: [true, "Password is required"],
   }
 })
+
 userSchema.statics.signup = async function(username ,email, password) {
   if ( !username || !email || !password ) {
     throw Error('All fields must be filled')

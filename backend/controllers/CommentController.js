@@ -5,10 +5,11 @@ const createComment = async (req, res) => {
   try {
     const { text, user_id, blog_id } = req.body;
     const comment = new Comment({ text, user_id, blog_id });
+    const com = comment._id;
     await comment.save();
-    res.status(201).json(comment);
+    res.status(201).json( com );
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Internal Server Error',  });
   }
 };
 

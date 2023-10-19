@@ -3,14 +3,19 @@ const Blog = require('../models/BlogModel');
 // Create a new blog
 const createBlog = async (req, res) => {
   try {
-    const { title, content, user_id, cover } = req.body;
-    const blog = new Blog({ title, content, user_id, cover });
+    const { title, content, userId, cover } = req.body;
+    const blog = new Blog({ 
+        title,
+        content,
+        user: userId,
+        cover });
     await blog.save();
-    res.status(201).json(blog);
+    res.status(201).json({ message: 'Blog created successfully'});
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
 
 // Get all blogs
 const getAllBlogs = async (req, res) => {

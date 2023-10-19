@@ -10,9 +10,10 @@ const blogSchema = new Schema({
     type: String,
     required: true,
   },
-  user_id: {
+
+  user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'User', // Reference to the User model
     required: true,
   },
   cover: {
