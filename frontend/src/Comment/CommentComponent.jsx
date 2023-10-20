@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useAuthContext } from "../Hooks/useAuthContext";
 
 const CommentComponent = () => {
+  const { user } = useAuthContext();
+
   const [comments, setComments] = useState([]);
-  const [comment, setComment] = useState({ text: '', user_id: '', blog_id: '' });
+  const [comment, setComment] = useState({ text: '',  userId: user.idd, blog_id: '' });
   const [selectedBlogId, setSelectedBlogId] = useState('');
 
   const fetchComments = async (blogId) => {
@@ -19,7 +22,7 @@ const CommentComponent = () => {
     try {
       comment.blog_id = selectedBlogId;
       await axios.post('/api/comments', comment);
-      setComment({ text: '', user_id: '', blog_id: '' });
+      setComment({ text: '', userId: user.idd, blog_id: '' });
       fetchComments(selectedBlogId);
     } catch (error) {
       console.error('Error creating comment', error);
@@ -39,7 +42,7 @@ const CommentComponent = () => {
   const updateComment = async (id) => {
     try {
       await axios.put(`/api/comments/${id}`, comment);
-      setComment({ text: '', user_id: '', blog_id: '' });
+      setComment({ text: '',  userId: user.idd, blog_id: '' });
       fetchComments(selectedBlogId);
     } catch (error) {
       console.error('Error updating comment', error);
@@ -90,8 +93,8 @@ const CommentComponent = () => {
       <input
         type="text"
         placeholder="User ID"
-        value={comment.user_id}
-        onChange={(e) => setComment({ ...comment, user_id: e.target.value })}
+        value={comment.userId}
+        onChange={(e) => setComment({ ...comment, userId: e.target.value })}
       />
       <button onClick={createComment}>Create</button>
 

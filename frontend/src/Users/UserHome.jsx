@@ -69,6 +69,12 @@ function UserHome() {
 
 						</Link>
 
+            <Link to="/users/comment"  className="btn btn-primary" >
+
+<AddIcon /> comment blog
+
+      </Link>
+
 
             <br />
             <br />
