@@ -10,31 +10,40 @@ import CommentComponent from './Comment/CommentComponent';
 import AddBlog from './Blog/AddBlog';
 import EditBlog from './Blog/EditBlog';
 import ViewBlog from './Blog/ViewBlog';
-import AddComment from './Comment/AddComment';
-import EditComment from './Comment/EditComment';
+import EditComment from './Blog/EditComment';
+import { AuthContextProvider } from './Context/AuthContext'
+import  { useState } from 'react';
 function App() {
   const {user} = useAuthContext()
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const toggleMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
   return (
     <div className="App">
+          <div className={`app ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+      <button onClick={toggleMode}>Toggle Mode</button>
+    </div>
+          <AuthContextProvider>
+
 	<Router>
 				<Routes>
         <Route exact path="/" element={!user? <UserSignup />:<Navigate to="/users/userhome"/> }/>
-
-    <Route exact path="/users/userhome" element={user?<UserHome />:<Navigate to="/"/>}/>  
+        <Route exact path="/users/userhome" element={user?<UserHome />:<Navigate to="/"/>}/>  
         <Route exact path="/login" element={!user? <UserLogin />:<Navigate to="/users/userhome"/>  }/>
         <Route exact path="/users/blog" element={<BlogComponent /> }/>
         <Route exact path="/users/addblog" element={<AddBlog /> }/>
         <Route exact path="/users/editblog/:id" element={<EditBlog /> }/>
         <Route exact path="/users/viewblog/:id" element={<ViewBlog /> }/>
         <Route exact path="/users/comment/" element={<CommentComponent /> }/>
-        <Route exact path="/users/editcomment" element={<EditComment /> }/>
-        <Route exact path="/users/addcomment" element={<AddComment /> }/>
-
-
-
-
+        <Route exact path="/users/editcomment/:id" element={<EditComment /> }/>
 				</Routes>
 			</Router>
+
+      </AuthContextProvider>
+
+
     </div>
   );
 }

@@ -1,5 +1,16 @@
+/* styles.css */
+.dark-mode {
+    background-color: #000;
+    color: #fff;
+  }
+  
+  .light-mode {
+    background-color: #fff;
+    color: #000;
+  }
 
-  @keyframes animate {
+
+@keyframes animate {
     0%{
         transform: translateY(0) rotate(0deg);
         opacity: 1;

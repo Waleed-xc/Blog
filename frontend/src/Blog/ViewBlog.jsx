@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuthContext } from '../Hooks/useAuthContext';
-
+import { Link } from 'react-router-dom';
 const ViewBlog = () => {
     const { user } = useAuthContext();
     const { id } = useParams();
@@ -77,30 +77,6 @@ const createComment = async () => {
   };
 
 
-
-
-// const deleteComment = async (id) => {
-//     try {
-//       // Send a DELETE request to delete the comment
-//       const response = await axios.delete(`/api/comment/${id}`);
-      
-//       if (response.status === 204) {
-//         return true;
-//         fetchComments(blog._id);
-
-//       } else {
-//         // Handle other responses as needed
-//         console.error('Failed to delete comment:', response);
-//         return false;
-//       }
-
-    
-//     } catch (error) {
-//       console.error('Error deleting comment:', error);
-//       return false;
-//     }
-//   };
-  
   useEffect(() => {
     fetchBlog();
     fetchComments(id);
@@ -172,6 +148,21 @@ const createComment = async () => {
         {comments.map((comment) => (
           <div key={comment._id}>
             <p>{comment.text}</p>
+
+
+            {comment.user_id === user.idd ? (
+  <Link to={`/users/editcomment/${comment._id}`} className="btn btn-primary">
+    edit
+  </Link>
+) : null}
+
+
+
+
+
+            {comment.user_id === user.idd && (
+            <button onClick={() => deleteComment(comment._id)}>Delete</button>
+          )}
             <p>{new Date(comment.createdAt).toLocaleString()}</p> {/* Convert to Date and format */}
 
             {comment.user_id === user.idd && (
