@@ -3,15 +3,18 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuthContext } from '../Hooks/useAuthContext';
 import { Link } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Choose a Quill theme
+import DeleteConfirmation from './DeleteConfirmation';
 const ViewBlog = () => {
     const { user } = useAuthContext();
     const { id } = useParams();
     const [blog, setBlog] = useState({ title: '', content: '', userId: user.idd, cover: '' });
-    const [loading, setLoading] = useState(true);
     const [comments, setComments] = useState([]);
     const [comment, setComment] = useState({ text: '', userId: user.idd, blogId: '' }); // Initialize blogId here
-    const [selectedBlogId, setSelectedBlogId] = useState('');
-  
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false); // Control delete confirmation modal visibility
+    const [CommentToDelete, setCommentToDelete] = useState(null); // Store the ID of the item to delete
+
     const fetchBlog = async () => {
       try {
         const response = await axios.get(`/api/blog/${id}`);
@@ -22,6 +25,40 @@ const ViewBlog = () => {
         console.error('Error fetching blog', error);
       }
     };
+    
+  const confirmDelete = (id) => {
+    setCommentToDelete(id);
+    setShowDeleteConfirmation(true);
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteConfirmation(false);
+    setCommentToDelete(null);
+  };
+
+
+const deleteComment = async () => {
+    try {
+      // Send a DELETE request to delete the comment
+      const response = await axios.delete(`/api/comment/${CommentToDelete}`);
+      if (response.status === 204) {
+        // Successfully deleted the comment
+        fetchComments(blog._id); // Refetch comments to update the list in real-time
+        setShowDeleteConfirmation(false);
+        setCommentToDelete(null); // Move these lines here
+        return true;
+      } else {
+        // Handle other responses as needed
+        console.error('Failed to delete comment:', response);
+        return false;
+      }
+    } catch (error) {
+      console.error('Error deleting comment:', error);
+      return false;
+    }
+  };
+  
+
 
 
 
@@ -56,25 +93,10 @@ const createComment = async () => {
       // Handle the error as needed in your component
     }
   };
-  const deleteComment = async (id) => {
-    try {
-      // Send a DELETE request to delete the comment
-      const response = await axios.delete(`/api/comment/${id}`);
-      
-      if (response.status === 204) {
-        // Successfully deleted the comment
-        fetchComments(blog._id); // Refetch comments to update the list in real-time
-        return true;
-      } else {
-        // Handle other responses as needed
-        console.error('Failed to delete comment:', response);
-        return false;
-      }
-    } catch (error) {
-      console.error('Error deleting comment:', error);
-      return false;
-    }
-  };
+
+  function renderQuillContent(content) {
+    return { __html: content };
+  }
 
 
   useEffect(() => {
@@ -85,13 +107,6 @@ const createComment = async () => {
   useEffect(() => {
     fetchComments(blog._id); // Fetch comments when blog._id changes
   }, [blog._id]);
-
-//   useEffect(() => {
-//     fetchBlog();
-//     fetchComments(id);
-//   }, [id]);
-
-
 
   const blogDateFormat = new Date(blog.createdAt);
   const BlogDate = blogDateFormat.toLocaleString();
@@ -104,7 +119,9 @@ const createComment = async () => {
             <br />
             Blog Title {blog.title}
             <br />
-            Blog Content {blog.content}
+            {/* Blog Content {blog.content} */}
+            <div dangerouslySetInnerHTML={renderQuillContent(blog.content)} />
+
             <br />
 
             Blog Created At {BlogDate}
@@ -161,18 +178,27 @@ const createComment = async () => {
 
 
             {comment.user_id === user.idd && (
-            <button onClick={() => deleteComment(comment._id)}>Delete</button>
+            <button onClick={() => confirmDelete(comment._id)}>Delete</button>
           )}
             <p>{new Date(comment.createdAt).toLocaleString()}</p> {/* Convert to Date and format */}
 
-            {comment.user_id === user.idd && (
-            <button onClick={() => deleteComment(comment._id)}>Delete</button>
-          )}
+
+
+
           </div>
 
         ))}
 
       </div>
+
+      <DeleteConfirmation
+        showModal={showDeleteConfirmation}
+        hideModal={cancelDelete}
+        confirmModal={deleteComment}
+        id={CommentToDelete}
+        type="comment"
+        message="Are you sure you want to delete this To Do?"
+      />
 
 
 

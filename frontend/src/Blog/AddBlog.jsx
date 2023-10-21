@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuthContext } from "../Hooks/useAuthContext";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Choose a Quill theme
 
 const AddBlog = () => {
     const {user} = useAuthContext()
@@ -36,18 +38,47 @@ const AddBlog = () => {
 
 
           </nav>
+
+
       <input
         type="text"
         placeholder="Title"
         value={blog.title}
         onChange={(e) => setBlog({ ...blog, title: e.target.value })}
       />
-      <input
+
+<ReactQuill
+  value={blog.content}
+  onChange={(content) => setBlog({ ...blog, content })}
+  theme="snow" // Choose a Quill theme
+  placeholder="Content"
+  modules={{
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      ['link'],
+    ],
+  }}
+  formats={['bold', 'italic', 'underline', 'strike', 'list', 'link']}
+/>
+
+
+      {/* <input
         type="text"
         placeholder="Content"
         value={blog.content}
         onChange={(e) => setBlog({ ...blog, content: e.target.value })}
-      />
+      /> */}
+
+
+
+
+
+
+
+
+
+
       <input
         type="text"
         placeholder="User ID"

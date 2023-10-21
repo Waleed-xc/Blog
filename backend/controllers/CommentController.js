@@ -55,18 +55,24 @@ const updateComment = async (req, res) => {
   }
 };
 
-// Delete a comment by ID
 const deleteComment = async (req, res) => {
-  try {
-    const deletedComment = await Comment.findByIdAndRemove(req.params.id);
-    if (!deletedComment) {
-      return res.status(404).json({ error: 'Comment not found' });
+    try {
+      // Find the comment by ID
+      const comment = await Comment.findById(req.params.id);
+      if (!comment) {
+        return res.status(404).json({ error: 'Comment not found' });
+      }
+      // Check if the authenticated user owns the comment
+    //   if (comment.user_id.toString() !== req.user.id) {
+    //     return res.status(403).json({ error: "You don't have permission to delete this comment" });
+    //   }
+      const deletedComment = await Comment.findByIdAndRemove(req.params.id);
+      res.status(204).send();
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
     }
-    res.status(204).send();
-  } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
+  };
+  
 
 module.exports = {
   createComment,
