@@ -17,8 +17,8 @@ const blogSchema = new Schema({
     required: true,
   },
   cover: {
-    type: String, // Store the path to the image file on your server
-    required: true,
+    data: Buffer,
+    contentType: String,
   },
   createdAt: {
     type: Date,

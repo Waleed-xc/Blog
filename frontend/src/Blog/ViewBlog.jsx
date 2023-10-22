@@ -115,19 +115,34 @@ const createComment = async () => {
     <div>
 
         <div className="blog">
-            Blog Post Cover: {blog.cover}
-            <br />
-            Blog Title {blog.title}
-            <br />
-            {/* Blog Content {blog.content} */}
-            <div dangerouslySetInnerHTML={renderQuillContent(blog.content)} />
+        {blog && (
+        <div className="blogg">
 
-            <br />
 
-            Blog Created At {BlogDate}
-            <br />
-            Author {user.usernameee}
-            <br />
+
+
+
+          {blog.cover && (
+
+
+
+<img
+style={{ objectFit: 'fill', height: 120, width: 180 }}
+src={`data:${blog.cover.contentType};base64,${blog.cover.data}`}
+/>
+
+
+          
+          )}
+          <br />
+          <br />
+          <h2>Blog Title: {blog.title}</h2>
+          <div dangerouslySetInnerHTML={{ __html: blog.content }} />
+          <br />
+          <p>Blog Created At: {blog.createdAt}</p>
+          <p>Author: {user.usernameee}</p>
+        </div>
+      )}
 
             </div>
 

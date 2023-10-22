@@ -167,11 +167,35 @@ const UserHome = () => {
   return (
     <div>
       <h2>Blogs</h2>
+      <Link to="/users/addblog"  className="btn btn-primary" >
+
+Add blog
+
+</Link>
+
       <ul>
         {blogs.map((b) => (
           <li key={b._id}>
             {b.title}
+
+            
+
+
+            <img
+              style={{ objectFit: 'fill', height: 120, width: 180 }}
+              src={`data:${b.cover.contentType};base64,${b.cover.data}`}
+              alt={b.title} // Provide alt text for the image
+            />
+        
+
+      
+
+
+
             <button className="btn btn-danger" onClick={() => confirmDelete(b._id)}>    Delete     </button>
+          
+
+
             <Link to={`/users/editblog/${b._id}`} className="btn btn-warning">
               Edit
             </Link>
