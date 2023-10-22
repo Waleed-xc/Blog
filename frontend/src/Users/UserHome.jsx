@@ -122,6 +122,8 @@ import axios from 'axios';
 import { useAuthContext } from "../Hooks/useAuthContext";
 import { Link } from 'react-router-dom';
 import DeleteConfirmation from '../Blog/DeleteConfirmation';
+ import { useUserLogout } from '../Hooks/useUserLogout';
+
 
 const UserHome = () => {
   const { user } = useAuthContext();
@@ -129,6 +131,7 @@ const UserHome = () => {
   const [blog, setBlog] = useState({ title: '', content: '', userId: user.idd, cover: '' });
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false); // Control delete confirmation modal visibility
   const [blogToDelete, setBlogToDelete] = useState(null); // Store the ID of the item to delete
+   const { userlogout } = useUserLogout();
 
   const fetchBlogs = async () => {
     try {
@@ -138,6 +141,12 @@ const UserHome = () => {
       console.error('Error fetching blogs', error);
     }
   };
+
+     const handleClick = () => {
+     userlogout();
+     window.location.href = "/";
+  }
+
 
   const confirmDelete = (id) => {
     setBlogToDelete(id);
@@ -166,6 +175,21 @@ const UserHome = () => {
 
   return (
     <div>
+       <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{justifyContent: 'center' , alignItems: 'center' }} > {user && (
+             <div>
+                             <button class="btn btn-dark" onClick={handleClick}>  Log out</button>
+
+         	 <span >  {user.email}</span> 
+            &nbsp;
+             </div>
+           )}
+           &nbsp; &nbsp;
+
+
+
+           </nav>
+
+
       <h2>Blogs</h2>
       <Link to="/users/addblog"  className="btn btn-primary" >
 
@@ -173,7 +197,37 @@ Add blog
 
 </Link>
 
-      <ul>
+
+<ul>
+  {blogs.map((b) => (
+    <li key={b._id}>
+      {b.title}
+      <img
+        style={{ objectFit: 'fill', height: 120, width: 180 }}
+        src={`data:${b.cover.contentType};base64,${b.cover.data}`}
+        alt={b.title}
+      />
+
+<Link to={`/users/viewblog/${b._id}`} className="btn btn-primary">
+              view
+            </Link>
+
+
+      {user.idd === b.user && (
+        <>
+          <button className="btn btn-danger" onClick={() => confirmDelete(b._id)}>
+            Delete
+          </button>
+          <Link to={`/users/editblog/${b._id}`} className="btn btn-warning">
+            Edit
+          </Link>
+        </>
+      )}
+    </li>
+  ))}
+</ul>
+
+      {/* <ul>
         {blogs.map((b) => (
           <li key={b._id}>
             {b.title}
@@ -186,11 +240,6 @@ Add blog
               src={`data:${b.cover.contentType};base64,${b.cover.data}`}
               alt={b.title} // Provide alt text for the image
             />
-        
-
-      
-
-
 
             <button className="btn btn-danger" onClick={() => confirmDelete(b._id)}>    Delete     </button>
           
@@ -204,7 +253,7 @@ Add blog
             </Link>
           </li>
         ))}
-      </ul>
+      </ul> */}
 
       <DeleteConfirmation
         showModal={showDeleteConfirmation}
