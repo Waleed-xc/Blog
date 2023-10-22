@@ -24,7 +24,7 @@ function App() {
     <div className="App">
           <div className={`app ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
       <button onClick={toggleMode}>Toggle Mode</button>
-    </div>
+  
           <AuthContextProvider>
 
 	<Router>
@@ -44,6 +44,7 @@ function App() {
       </AuthContextProvider>
 
 
+    </div>
     </div>
   );
 }
