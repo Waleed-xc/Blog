@@ -13,11 +13,10 @@ const createComment = async (req, res) => {
   }
 };
 
-// Get all comments for a specific blog
 const getCommentsByBlogId = async (req, res) => {
   try {
     const blogId = req.params.blogId;
-    const comments = await Comment.find({ blog_id: blogId });
+    const comments = await Comment.find({ blog_id: blogId }).populate('user_id');
     res.status(200).json(comments);
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
@@ -27,7 +26,7 @@ const getCommentsByBlogId = async (req, res) => {
 // Get a single comment by ID
 const getCommentById = async (req, res) => {
   try {
-    const comment = await Comment.findById(req.params.id);
+    const comment = await Comment.findById(req.params.id).populate('user_id'); // Assuming 'user_id' is the reference to the 'User' model in your Comment schema
     if (!comment) {
       return res.status(404).json({ error: 'Comment not found' });
     }
@@ -36,6 +35,7 @@ const getCommentById = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
 
 // Update a comment by ID
 const updateComment = async (req, res) => {

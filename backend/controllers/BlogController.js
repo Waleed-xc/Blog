@@ -93,7 +93,8 @@ const updateBlog = (req, res) => {
 
 const getAllBlogs = async (req, res) => {
   try {
-    const blogs = await Blog.find();
+    const blogs = await Blog.find().populate('user'); // Assuming 'user_id' is the reference to the 'User' model in your Blog schema
+
     const blogsWithImages = blogs.map((blog) => {
       return {
         ...blog._doc,
@@ -103,20 +104,17 @@ const getAllBlogs = async (req, res) => {
         },
       };
     });
+
     res.status(200).json(blogsWithImages);
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-
-
-
-
-
 const getBlogById = async (req, res) => {
   try {
-    const blog = await Blog.findById(req.params.id);
+    const blog = await Blog.findById(req.params.id).populate('user'); // Assuming 'user_id' is the reference to the 'User' model in your Blog schema
+
     if (!blog) {
       return res.status(404).json({ error: 'Blog not found' });
     }

@@ -123,8 +123,6 @@ import { useAuthContext } from "../Hooks/useAuthContext";
 import { Link } from 'react-router-dom';
 import DeleteConfirmation from '../Blog/DeleteConfirmation';
  import { useUserLogout } from '../Hooks/useUserLogout';
-
-
 const UserHome = () => {
   const { user } = useAuthContext();
   const [blogs, setBlogs] = useState([]);
@@ -174,10 +172,11 @@ const UserHome = () => {
   }, []);
 
   return (
-    <div>
-       <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{justifyContent: 'center' , alignItems: 'center' }} > {user && (
+    <div className='user'>
+
+       <nav className="navbar navbar navbar-light" style={{justifyContent: 'center' , alignItems: 'center' }} > {user && (
              <div>
-                             <button class="btn btn-dark" onClick={handleClick}>  Log out</button>
+                             <button class="btn btn-secondary " onClick={handleClick}>  Log out</button>
 
          	 <span >  {user.email}</span> 
             &nbsp;
@@ -213,7 +212,7 @@ Add blog
             </Link>
 
 
-      {user.idd === b.user && (
+      {user.idd === b.user._id && (
         <>
           <button className="btn btn-danger" onClick={() => confirmDelete(b._id)}>
             Delete
@@ -227,33 +226,6 @@ Add blog
   ))}
 </ul>
 
-      {/* <ul>
-        {blogs.map((b) => (
-          <li key={b._id}>
-            {b.title}
-
-            
-
-
-            <img
-              style={{ objectFit: 'fill', height: 120, width: 180 }}
-              src={`data:${b.cover.contentType};base64,${b.cover.data}`}
-              alt={b.title} // Provide alt text for the image
-            />
-
-            <button className="btn btn-danger" onClick={() => confirmDelete(b._id)}>    Delete     </button>
-          
-
-
-            <Link to={`/users/editblog/${b._id}`} className="btn btn-warning">
-              Edit
-            </Link>
-            <Link to={`/users/viewblog/${b._id}`} className="btn btn-primary">
-              view
-            </Link>
-          </li>
-        ))}
-      </ul> */}
 
       <DeleteConfirmation
         showModal={showDeleteConfirmation}
@@ -261,7 +233,7 @@ Add blog
         confirmModal={executeDelete}
         id={blogToDelete}
         type="blog"
-        message="Are you sure you want to delete this To Do?"
+        message="Are you sure you want to delete this Blog?"
       />
     </div>
   );

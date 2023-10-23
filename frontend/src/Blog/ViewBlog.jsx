@@ -14,6 +14,7 @@ const ViewBlog = () => {
     const [comment, setComment] = useState({ text: '', userId: user.idd, blogId: '' }); // Initialize blogId here
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false); // Control delete confirmation modal visibility
     const [CommentToDelete, setCommentToDelete] = useState(null); // Store the ID of the item to delete
+    const [commentWithUsers, setCommentWithUsers] = useState([]);
 
     const fetchBlog = async () => {
       try {
@@ -57,8 +58,6 @@ const deleteComment = async () => {
       return false;
     }
   };
-  
-
 
 
 
@@ -115,6 +114,20 @@ const createComment = async () => {
     <div>
 
         <div className="blog">
+
+
+        <div>
+      {blog && (
+        <div>
+          <p>Title: {blog.title}</p>
+          <p>Content: {blog.content}</p>
+          <p>Username: {blog.user.username}</p> {/* Accessing the user's username */}
+        </div>
+      )}
+    </div>
+
+
+
         {blog && (
         <div className="blogg">
 
@@ -140,13 +153,12 @@ src={`data:${blog.cover.contentType};base64,${blog.cover.data}`}
           <div dangerouslySetInnerHTML={{ __html: blog.content }} />
           <br />
           <p>Blog Created At: {blog.createdAt}</p>
-          <p>Author: {user.usernameee}</p>
+          <p>Author: {blog._id}</p>
+          
         </div>
       )}
 
             </div>
-
-
 
 
 
@@ -181,7 +193,7 @@ src={`data:${blog.cover.contentType};base64,${blog.cover.data}`}
           <div key={comment._id}>
             <p>{comment.text}</p>
 
-
+            <p>Created by: {comment.user_id.username}</p> {/* Accessing the user's username */}
             {comment.user_id === user.idd ? (
   <Link to={`/users/editcomment/${comment._id}`} className="btn btn-primary">
     edit
@@ -203,6 +215,10 @@ src={`data:${blog.cover.contentType};base64,${blog.cover.data}`}
           </div>
 
         ))}
+
+
+
+
 
       </div>
 
