@@ -20,6 +20,8 @@ export const useUserSignup = () => {
     if (response.ok) {
       localStorage.setItem('user', JSON.stringify(json))
       alert("Signed up");
+      window.location.href ="/"
+
       dispatch({type: 'USERLOGIN', payload: json})
       setIsLoading(false)
     }

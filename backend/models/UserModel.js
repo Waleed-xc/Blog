@@ -17,7 +17,6 @@ const userSchema = new mongoose.Schema({
     required: [true, "Password is required"],
   }
 })
-
 userSchema.statics.signup = async function(username ,email, password) {
   if ( !username || !email || !password ) {
     throw Error('All fields must be filled')
@@ -31,6 +30,10 @@ userSchema.statics.signup = async function(username ,email, password) {
   const exists = await this.findOne({ email })
   if (exists) {
     throw Error('Email already in use')
+  }
+  const duplicateUsername = await this.findOne({ username });
+  if (duplicateUsername) {
+    throw Error('Username already in use');
   }
   const salt = await bcryptjs.genSalt(10)
   const hash = await bcryptjs.hash(password, salt)
