@@ -198,26 +198,26 @@ Add blog
 
 
 <ul>
-  {blogs.map((b) => (
-    <li key={b._id}>
-      {b.title}
+  {blogs.map((blog) => (
+    <li key={blog._id}>
+      {blog.user.username}
       <img
         style={{ objectFit: 'fill', height: 120, width: 180 }}
-        src={`data:${b.cover.contentType};base64,${b.cover.data}`}
-        alt={b.title}
+        src={`data:${blog.cover.contentType};base64,${blog.cover.data}`}
+        alt={blog.title}
       />
 
-<Link to={`/users/viewblog/${b._id}`} className="btn btn-primary">
+<Link to={`/users/viewblog/${blog._id}`} className="btn btn-primary">
               view
             </Link>
 
 
-      {user.idd === b.user._id && (
+      {user.idd === blog.user._id && (
         <>
-          <button className="btn btn-danger" onClick={() => confirmDelete(b._id)}>
+          <button className="btn btn-danger" onClick={() => confirmDelete(blog._id)}>
             Delete
           </button>
-          <Link to={`/users/editblog/${b._id}`} className="btn btn-warning">
+          <Link to={`/users/editblog/${blog._id}`} className="btn btn-warning">
             Edit
           </Link>
         </>

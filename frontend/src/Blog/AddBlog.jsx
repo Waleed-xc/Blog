@@ -2,6 +2,8 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useAuthContext } from "../Hooks/useAuthContext";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Choose a Quill theme
 
 function AddBlog() {
   const { user } = useAuthContext();
@@ -49,13 +51,32 @@ function AddBlog() {
         value={formData.title}
         onChange={handleInputChange}
       />
+
+      
+<ReactQuill
+  value={formData.content} 
+  onChange={(content) => setFormData({ ...formData, content })} 
+  theme="snow"
+  placeholder="Content"
+  modules={{
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      ['link'],
+    ],
+  }}
+  formats={['bold', 'italic', 'underline', 'strike', 'list', 'link']}
+/>
+{/* 
       <input
         type="text"
         name="content"
         placeholder="Content"
         value={formData.content}
         onChange={handleInputChange}
-      />
+      /> */}
+
+      
       <input type="file" onChange={handleFileChange} />
       <button onClick={createBlog}>Create Blog</button>
     </div>

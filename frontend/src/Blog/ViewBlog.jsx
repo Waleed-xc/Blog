@@ -26,7 +26,7 @@ const ViewBlog = () => {
         console.error('Error fetching blog', error);
       }
     };
-    
+
   const confirmDelete = (id) => {
     setCommentToDelete(id);
     setShowDeleteConfirmation(true);
@@ -36,8 +36,6 @@ const ViewBlog = () => {
     setShowDeleteConfirmation(false);
     setCommentToDelete(null);
   };
-
-
 const deleteComment = async () => {
     try {
       // Send a DELETE request to delete the comment
@@ -58,9 +56,6 @@ const deleteComment = async () => {
       return false;
     }
   };
-
-
-
     const fetchComments = async (blogId) => {
     try {
       const response = await axios.get(`/api/comment/${blogId}`);
@@ -69,96 +64,71 @@ const deleteComment = async () => {
       console.error('Error fetching comments', error);
     }
   };
-
 const createComment = async () => {
     try {
-      // Send a POST request to create a comment
       const response = await axios.post('/api/comment', {
         text: comment.text,
         user_id: user.idd,
         blog_id: blog._id, // Set blogId to the value of blog._id
       });
-      // Assuming your server returns the newly created comment's ID
       const createdCommentId = response.data;
       console.log('Comment created with ID:', createdCommentId);
-      // Clear the text input after creating a comment
       setComment({ ...comment, text: '' });
-  
-      // Refetch comments to display in real-time
-      fetchComments(blog._id);
+        fetchComments(blog._id);
   
     } catch (error) {
       console.error('Error creating comment', error);
-      // Handle the error as needed in your component
     }
   };
-
   function renderQuillContent(content) {
     return { __html: content };
   }
-
-
   useEffect(() => {
     fetchBlog();
     fetchComments(id);
   }, [id]);
-
   useEffect(() => {
-    fetchComments(blog._id); // Fetch comments when blog._id changes
+    fetchComments(blog._id); 
   }, [blog._id]);
-
   const blogDateFormat = new Date(blog.createdAt);
   const BlogDate = blogDateFormat.toLocaleString();
+  
 
   return (
     <div>
 
-        <div className="blog">
-
-
+<div className="blog">
+  {blog && (
+    <div>
+      <img
+        style={{ objectFit: 'fill', height: 120, width: 180 }}
+        src={`data:${blog.cover.contentType};base64,${blog.cover.data}`}
+      />
+      <p>Title: {blog.title}</p>
+      <p>Content: {blog.content}</p>
+      <p>Username: {blog.user ? blog.user.username : 'Unknown'}</p>
+    </div>
+  )}
+</div>
+        {/* <div className="blog">
         <div>
       {blog && (
         <div>
+          <img
+style={{ objectFit: 'fill', height: 120, width: 180 }}
+src={`data:${blog.cover.contentType};base64,${blog.cover.data}`}
+/>
           <p>Title: {blog.title}</p>
           <p>Content: {blog.content}</p>
-          <p>Username: {blog.user.username}</p> {/* Accessing the user's username */}
+          <p>Username: {author}</p>
+
         </div>
       )}
     </div>
 
 
 
-        {blog && (
-        <div className="blogg">
-
-
-
-
-
-          {blog.cover && (
-
-
-
-<img
-style={{ objectFit: 'fill', height: 120, width: 180 }}
-src={`data:${blog.cover.contentType};base64,${blog.cover.data}`}
-/>
-
-
-          
-          )}
-          <br />
-          <br />
-          <h2>Blog Title: {blog.title}</h2>
-          <div dangerouslySetInnerHTML={{ __html: blog.content }} />
-          <br />
-          <p>Blog Created At: {blog.createdAt}</p>
-          <p>Author: {blog._id}</p>
-          
-        </div>
-      )}
-
-            </div>
+            </div> */}
 
 
 
