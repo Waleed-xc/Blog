@@ -39,6 +39,7 @@ const EditBlog = () => {
       });
 
       console.log('Blog updated successfully');
+      window.location.href="/users/userhome"
       // You can redirect to the blog list or another page after updating.
     } catch (error) {
       console.error('Error updating blog', error);
@@ -46,19 +47,24 @@ const EditBlog = () => {
   };
 
   return (
-    <div>
-      <h2>Edit Blog</h2>
-      <p>Editing Blog ID: {id}</p>
-      <form>
-        <div>
-          <label>Title:</label>
-          <input
+    <div style={{height: "100vh"}}>
+      <br />
+
+      <h2>Editing Blog: {blog.title}  </h2>
+
+ 
+      <form >
+        <div className='mt-4 mb-4'>
+          <label className='w-50'>Title:
+          <input className='form-control'
             type="text"
             value={blog.title}
             onChange={(e) => setBlog({ ...blog, title: e.target.value })}
-          />
+          /> </label>
+
         </div>
-        <div>
+
+        <div className='mt-4 mb-4 '>
           <label>Content:</label>
           <ReactQuill
             value={blog.content}
@@ -66,14 +72,20 @@ const EditBlog = () => {
             theme="snow"
           />
         </div>
-        <div>
+        <br />
+
+
+        <div className='mt-4 mb-4' > 
           <label>Cover:</label>
           <input
-            type="file" // Use input type 'file' for file upload
+            type="file"
+            accept="image/*"
             onChange={(e) => setCoverFile(e.target.files[0])} // Set the selected file
           />
         </div>
-        <button type="button" onClick={handleUpdate}>
+        <br />
+
+        <button className='btn btn-secondary mt-5' type="button" onClick={handleUpdate}>
           Update Blog
         </button>
       </form>
