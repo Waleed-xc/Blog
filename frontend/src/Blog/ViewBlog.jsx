@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuthContext } from '../Hooks/useAuthContext';
 import { Link } from 'react-router-dom';
-import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Choose a Quill theme
 import DeleteConfirmation from './DeleteConfirmation';
 const ViewBlog = () => {
@@ -14,7 +13,6 @@ const ViewBlog = () => {
     const [comment, setComment] = useState({ text: '', userId: user.idd, blogId: '' }); // Initialize blogId here
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false); // Control delete confirmation modal visibility
     const [CommentToDelete, setCommentToDelete] = useState(null); // Store the ID of the item to delete
-    const [commentWithUsers, setCommentWithUsers] = useState([]);
 
     const fetchBlog = async () => {
       try {
@@ -99,43 +97,31 @@ const createComment = async () => {
 
 <div className="blog">
   {blog && (
-    <div>
-      <img
-        style={{ objectFit: 'fill', height: 120, width: 180 }}
+    <div >
+      <img className='mt-3 mb-3' 
+        style={{ objectFit: 'fill', height: 300  , width: 400 }}
         src={`data:${blog.cover.contentType};base64,${blog.cover.data}`}
       />
-      <p>Title: {blog.title}</p>
-      <p>Content: {blog.content}</p>
-      <p>Username: {blog.user ? blog.user.username : 'Unknown'}</p>
+      <br />
+      <h4>Title: {blog.title}</h4>
+      <br />
+      <h5>Blog Post</h5>
+     
+      <div className="content" dangerouslySetInnerHTML={renderQuillContent(blog.content)} />
+    <br />
+      <p>Blog Author: {blog.user ? blog.user.username : 'Unknown'}</p>
     </div>
   )}
 </div>
-        {/* <div className="blog">
-        <div>
-      {blog && (
-        <div>
-          <img
-style={{ objectFit: 'fill', height: 120, width: 180 }}
-src={`data:${blog.cover.contentType};base64,${blog.cover.data}`}
-/>
-          <p>Title: {blog.title}</p>
-          <p>Content: {blog.content}</p>
-          <p>Username: {author}</p>
 
-        </div>
-      )}
-    </div>
+{console.log(user.idd)}
 
 
-
-            </div> */}
-
-
-
-      <h2>Comment</h2>
+      <div className='d-flex justify-content-center align-items-center'>
       <input
+        className='form-control w-25'
         type="text"
-        placeholder="Text"
+        placeholder="Comment"
         value={comment.text}
         onChange={(e) => setComment({ ...comment, text: e.target.value })}
       />
@@ -151,46 +137,54 @@ src={`data:${blog.cover.contentType};base64,${blog.cover.data}`}
         value={comment.userId}
         disabled // Make it read-only
       />
-      <button onClick={createComment}>Comment</button>
+      <button className='btn btn-secondary' onClick={createComment}>Comment</button>
+
+      </div> 
 
 
+      <h3 className='ms-4 d-flex justify-content-start'>Comments:</h3>
+
+      <div className="">
+      <table class="table table-light table-striped">
+  <thead>
+    <tr>
+      <th >User Name</th>
+      <th scope="col">Comment</th>
+      <th scope="col">Created At</th>
+      <th scope="col">Modify</th>
+    </tr>
+  </thead>
+  <tbody>
+
+  {comments.map((comment) => (
+  <tr key={comment._id}>
+    <td >{comment.user_id.username}</td>
+    <td>{comment.text}</td>
+    <td className='p-2 bd-highlight'>
+      {new Date(comment.createdAt).toLocaleString()}
+    </td>
+
+    <td>
+      {comment.user_id._id === user.idd ? (
+        <Link to={`/users/editcomment/${comment._id}`} className="btn btn-secondary">
+          Edit
+        </Link>
+      ) : "you can't modify this comment"}
+      {comment.user_id._id === user.idd && (
+        <button className='btn btn-secondary' onClick={() => confirmDelete(comment._id)}>Delete</button>
+      )}
+    </td>
+  </tr>
+))}
+        
+        </tbody>
 
 
-
-      <div className="comments">
-        <h2>Comments:</h2>
-        {comments.map((comment) => (
-          <div key={comment._id}>
-            <p>{comment.text}</p>
-
-            <p>Created by: {comment.user_id.username}</p> {/* Accessing the user's username */}
-            {comment.user_id === user.idd ? (
-  <Link to={`/users/editcomment/${comment._id}`} className="btn btn-primary">
-    edit
-  </Link>
-) : null}
-
-
-
-
-
-            {comment.user_id === user.idd && (
-            <button onClick={() => confirmDelete(comment._id)}>Delete</button>
-          )}
-            <p>{new Date(comment.createdAt).toLocaleString()}</p> {/* Convert to Date and format */}
-
-
-
-
-          </div>
-
-        ))}
-
-
-
+</table>
 
 
       </div>
+
 
       <DeleteConfirmation
         showModal={showDeleteConfirmation}

@@ -24,7 +24,7 @@ function App() {
 
 
 <div className={`App ${isDarkMode ? 'bg-dark text-light' : 'bg-light text-dark'}`}>
-  <button   className={` btn ${isDarkMode ? 'bg-light text-dark' : 'bg-dark text-light'} position-absolute bottom-0 start-0 mt-3 mx-3 rounded-circle  `}
+  <button   className={` btn ${isDarkMode ? 'bg-light text-dark' : 'bg-dark text-light'} position-fixed bottom-0 start-0 mt-3 mx-3 rounded-circle  `}
  onClick={toggleMode}>
           {isDarkMode ? (
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sun" viewBox="0 0 16 16">
