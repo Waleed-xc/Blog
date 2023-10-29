@@ -193,7 +193,7 @@ const createComment = async () => {
         confirmModal={deleteComment}
         id={CommentToDelete}
         type="comment"
-        message="Are you sure you want to delete this To Do?"
+        message="Are you sure you want to delete this Comment?"
       />
 
 
