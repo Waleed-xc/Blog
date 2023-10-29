@@ -2,11 +2,23 @@
 a Blog Application using MERN Stack
 
 1- user authentication, registration, login using authcontext + json web tokens (jwt)
+
+
 2-the blog has a dark mode feature  
+
+
 3-the blog gives the user to interact with other blogs through comments
+
+
 4-the blog can't be edited or deleted except after verifying the user that created the blog 
+
+
 5-the comments can't be edited or deleted excep after verifying the user that created the blog
+
+
 6-the blog app uses bootstrap for the design part of the application
+
+
 
 to run the application clone the code 
 open a terminal and go to frontend directory and run npm i
