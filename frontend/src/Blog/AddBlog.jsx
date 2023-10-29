@@ -73,7 +73,6 @@ function AddBlog() {
   value={formData.content} 
   onChange={(content) => setFormData({ ...formData, content })} 
   theme="snow"
-  placeholder="Content"
   modules={{
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],

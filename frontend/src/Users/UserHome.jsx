@@ -1,128 +1,11 @@
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
-// import { useAuthContext } from "../Hooks/useAuthContext";
-// import { Link } from 'react-router-dom';
-// import { useUserLogout } from '../Hooks/useUserLogout';
-// import DeleteConfirmation from './DeleteConfirmation'; // Import the DeleteConfirmation component
-// import '../Users/style.css';
-// import { PenIcon , TrashIcon, AddIcon , BackIcon } from '../Users/Icons'; // Import the PenIcon from your Icon component
 
-// function UserHome() {
-
-//   const { user } = useAuthContext();
-//   const { userlogout } = useUserLogout();
-//   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false); // Control delete confirmation modal visibility
-
-//   const handleClick = () => {
-//     userlogout();
-//     window.location.href = "/";
-//   }
-
-
-//   return (
-//     <body className='bg-light bg-gradient' style={{height: "100vh"}} >
-      
-
-//     <div className='contrainer bg-light' >
-
-// <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{justifyContent: 'center' , alignItems: 'center' }} >
-// {user && (
-//             <div>
-//                             <button class="btn btn-dark" onClick={handleClick}>  <BackIcon/> Log out</button>
-
-//         	 <span >  {user.email}</span> 
-//            &nbsp;
-//             </div>
-//           )}
-//           &nbsp; &nbsp;
-
-
-
-//           </nav>
- 
-//       <div class="bg-light"  >
-//     <div class="container">
-//       <h1 class="display-3">Hello, Mr. {user.usernameee}!</h1>
-//       <h3 class="display-5" >Here Are Your To Do List</h3>
-//     </div>
-// </div>
-// <Link to="/users/addblog"  className="btn btn-primary" >
-
-//       <AddIcon /> Add blog
-
-// 						</Link>
-
-//             <Link to="/users/blog"  className="btn btn-primary" >
-
-//       <AddIcon /> view blog
-
-// 						</Link>
-
-//             <Link to="/users/editblog"  className="btn btn-primary" >
-
-//       <AddIcon /> edit blog
-
-// 						</Link>
-
-//             <Link to="/users/comment"  className="btn btn-primary" >
-
-// <AddIcon /> comment blog
-
-//       </Link>
-
-
-//             <br />
-//             <br />
-
-
-
-
-
-//           <div className=" table-responsive">
-//           <table className="  table  table-dark table-hover table-striped container ">
-
-//           <thead>
-//     <tr>
-//       <th>ToDo</th>
-//       <th>Status</th>
-//       <th>Edit</th>
-//       <th>Delete</th>
-//     </tr>
-//   </thead>
-
-
-
-//   <tbody>
-        
-  
-//         </tbody>
-
-
-// </table>
-
-// </div>
-
-// </div>
-
-
-// <br />
-
-// </body>
-
-
-
-//   );
-// }
-
-// export default UserHome;
-
-// UserHome.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuthContext } from "../Hooks/useAuthContext";
 import { Link } from 'react-router-dom';
 import DeleteConfirmation from '../Blog/DeleteConfirmation';
  import { useUserLogout } from '../Hooks/useUserLogout';
+ import { PenIcon , TrashIcon, AddIcon , BackIcon , EyeIcon } from '../Users/Icons'; // Import the PenIcon from your Icon component
 const UserHome = () => {
   const { user } = useAuthContext();
   const [blogs, setBlogs] = useState([]);
@@ -171,12 +54,14 @@ const UserHome = () => {
     fetchBlogs();
   }, []);
 
+
+
   return (
-    <div className='user'>
+    <div className='user' style={{height: "150vh"}}  >
 
        <nav className="navbar navbar navbar-light" style={{justifyContent: 'center' , alignItems: 'center' }} > {user && (
              <div>
-                             <button class="btn btn-secondary " onClick={handleClick}>  Log out</button>
+                             <button class="btn btn-secondary " onClick={handleClick}>  <BackIcon/>  Log out</button>
 
          	 <span >  {user.email}</span> 
             &nbsp;
@@ -187,44 +72,62 @@ const UserHome = () => {
 
 
            </nav>
+           <div class="container  p-1 my-3 border">
 
-
-      <h2>Blogs</h2>
-      <Link to="/users/addblog"  className="btn btn-primary" >
-
-Add blog
-
+<div class="d-flex bd-highlight mb-4">
+      <h2 className='p-2 w-100 bd-highlight'>Blogs</h2>
+      <br />
+      <Link to="/users/addblog"  className="p-2 flex-shrink-0 bd-highlight btn btn-success mb-3 end-0" >
+       Add <AddIcon/> 
 </Link>
+<br />
+</div>
+</div>
 
-
-<ul>
+<div class="container  p-1 my-3 border">
+<ul class="list-group ">
   {blogs.map((blog) => (
-    <li key={blog._id}>
-      {blog.user.username}
+    <li class="list-group-item list-group-item-light" key={blog._id}>
+
+<h5 className='mx-1'> Blog Author: {blog.user.username}</h5>
+
+ <small className='opacity-75' > Created At: {new Date(blog.createdAt).toLocaleString()} </small>
+
+<br />
+<div class="container-fluid no-padding">
       <img
-        style={{ objectFit: 'fill', height: 120, width: 180 }}
+      className='img-fluid w-25'
+        // style={{ objectFit: 'fill', height: 220, width: 280 }}
         src={`data:${blog.cover.contentType};base64,${blog.cover.data}`}
         alt={blog.title}
       />
+      <br />
+      </div>
 
-<Link to={`/users/viewblog/${blog._id}`} className="btn btn-primary">
-              view
+
+<Link to={`/users/viewblog/${blog._id}`} className="btn btn-secondary my-1 mx-1">
+<EyeIcon/>            {blog.title}  
             </Link>
 
 
       {user.idd === blog.user._id && (
+
         <>
-          <button className="btn btn-danger" onClick={() => confirmDelete(blog._id)}>
-            Delete
-          </button>
-          <Link to={`/users/editblog/${blog._id}`} className="btn btn-warning">
-            Edit
+                  <Link to={`/users/editblog/${blog._id}`} className="btn btn-warning  my-1 mx-1">
+          <PenIcon/>  Edit Post
           </Link>
+          <button className="btn btn-danger my-1 mx-1 " onClick={() => confirmDelete(blog._id)}>
+          <TrashIcon/> Delete Post
+          </button>
+
+
         </>
       )}
     </li>
   ))}
 </ul>
+</div>
+
 
 
       <DeleteConfirmation

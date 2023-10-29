@@ -91,7 +91,6 @@ const createComment = async () => {
   const blogDateFormat = new Date(blog.createdAt);
   const BlogDate = blogDateFormat.toLocaleString();
   
-
   return (
     <div>
 
@@ -107,9 +106,11 @@ const createComment = async () => {
       <br />
       <h5>Blog Post</h5>
      
-      <div className="content" dangerouslySetInnerHTML={renderQuillContent(blog.content)} />
+      <div className="start-0" dangerouslySetInnerHTML={renderQuillContent(blog.content)} />
     <br />
       <p>Blog Author: {blog.user ? blog.user.username : 'Unknown'}</p>
+      <p> Blog Date: {BlogDate}</p>
+
     </div>
   )}
 </div>
