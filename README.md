@@ -4,7 +4,7 @@ a Blog Application using MERN Stack
 1- user authentication, registration, login using authcontext + json web tokens (jwt)
 
 
-2-the blog has a dark mode feature  
+2-the blog has a dark mode feature as well as the use of react-quil for blog editing
 
 
 3-the blog gives the user to interact with other blogs through comments
