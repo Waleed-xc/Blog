@@ -18,13 +18,26 @@ a Blog Application using MERN Stack
 
 6-the blog app uses bootstrap for the design part of the application
 
+</br>
+<p align="center">
 
+<img src="https://cdn.simpleicons.org/react" alt="react" height="48" width="48">
+<img src="https://cdn.simpleicons.org/mongodb" alt="mongodb" height="48" width="48">
+<img src="https://cdn.simpleicons.org/html5" alt="html5" height="48" width="48">
+<img src="https://cdn.simpleicons.org/css3" alt="css3" height="48" width="48">
+<img src="https://cdn.simpleicons.org/express" alt="express" height="48" width="48">
+<img src="https://cdn.simpleicons.org/nodedotjs" alt="nodejs" height="48" width="48">
+<img src="https://cdn.simpleicons.org/bootstrap" alt="bootstrap" height="48" width="48">
+<img src="https://cdn.simpleicons.org/jsonwebtokens" alt="jsonwebtokens" height="48" width="48">
 
+</p>
+</br>
 to run the application clone the code 
 open a terminal and go to frontend directory and run npm i
 in the same terminal open up the backend directory and run npm i
 create a .env file inside of it put your a MONGO_URI
 inside of the backend directory create a folder called uploads for multer
+-
 
 # blog screenshots
 ![Screenshot (30)](https://github.com/Waleed-xc/Blog/assets/102128756/3697e660-da34-48df-b3af-3dfa37a56894)
